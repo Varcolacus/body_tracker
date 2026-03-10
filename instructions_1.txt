@@ -1,0 +1,131 @@
+You are working on a local React + Vite app called “Body Recomp Tracker”.
+
+Your job is to improve the app safely, incrementally, and with production-quality code.
+
+PROJECT CONTEXT
+- Stack: React + Vite
+- Main goal: a nutrition / body recomposition tracker
+- Core features already expected:
+  - meal-level food logging
+  - calories and protein tracking
+  - separate rest-day vs training-day maintenance
+  - daily calorie balance chart
+  - daily protein chart with target tunnel
+  - cumulative fat-change chart
+  - body-weight chart with colored bars
+  - export/import JSON
+  - local persistence
+- Future goal:
+  - natural-language food entry
+  - fuzzy multilingual parsing
+  - optional LLM integration for messy meal notes
+
+BEHAVIOR RULES
+1. Do not rewrite the whole app unless explicitly asked.
+2. Preserve existing functionality unless I ask to change it.
+3. Make the smallest correct change that solves the task.
+4. Before editing, inspect the existing code structure and explain briefly what you plan to change.
+5. After editing, summarize:
+   - what changed
+   - which files changed
+   - any assumptions made
+   - how I can test it
+6. If something is ambiguous, prefer a safe default and state the assumption.
+7. Keep the UI simple, clean, and practical.
+8. Do not add unnecessary dependencies.
+9. Prefer plain React logic unless a library is clearly justified.
+10. Keep calculations deterministic and easy to audit.
+
+DATA / DOMAIN RULES
+- Rest-day maintenance and training-day maintenance must remain separate.
+- Daily balance formula:
+  balance = intake - maintenance
+- Fat estimate formula:
+  7700 kcal = 1 kg fat
+- Protein target tunnel:
+  minimum = 140 g
+  upper target = 180 g
+- Weight chart color logic:
+  - green = lower than previous measurement
+  - red = higher than previous measurement
+  - yellow = unchanged
+- Weight chart should show value labels on top of bars.
+- Weight chart y-axis minimum should stay configurable.
+- Charts must remain readable and consistent.
+
+FOOD ENTRY RULES
+- The app should support:
+  1. manual structured food rows
+  2. fast food lookup from a local food library
+  3. natural-language parsing later
+- If implementing food matching:
+  - support typos
+  - support mixed languages where possible
+  - prefer a local heuristic parser first
+  - keep the parsing layer isolated so it can later be swapped to an LLM/API parser
+- Never silently invent highly specific nutrition data if the input is too ambiguous.
+- If a food match is uncertain, surface the uncertainty clearly in code or UI.
+
+ARCHITECTURE RULES
+- Keep business logic separated from UI where possible.
+- If logic gets large, extract utility functions into separate files.
+- Good candidates for separation:
+  - nutrition calculations
+  - food matching / parsing
+  - chart data transformation
+  - storage import/export
+- Make any future LLM integration modular:
+  - parser interface
+  - local parser implementation
+  - optional remote/LLM parser implementation
+
+CODE QUALITY RULES
+- Write clear, maintainable code.
+- Use descriptive names.
+- Avoid deeply nested logic when possible.
+- Add comments only where they help understanding.
+- Do not leave dead code behind.
+- If you refactor, keep it controlled and explain why.
+- If you add a new file, explain why it exists.
+
+UI RULES
+- Optimize for speed of logging.
+- The UI should help me enter a day quickly.
+- Prefer:
+  - clear totals
+  - clear buttons
+  - obvious save/update flow
+  - low-friction meal entry
+- If adding new UI, make sure it works on smaller screens too.
+
+TESTING RULES
+When you finish a change, always tell me:
+1. what to click
+2. what to type
+3. what result I should see
+
+If relevant, also mention edge cases:
+- empty breakfast
+- partial day before dinner
+- updating the same date twice
+- unchanged weight
+- typo in food name
+- mixed-language meal note
+
+LLM INTEGRATION RULES
+If I ask for AI parsing:
+- first propose the minimal architecture
+- keep API keys out of client-side code
+- prefer a backend route for model calls
+- return structured JSON only from the model
+- validate model output before inserting into app state
+
+WHEN YOU MODIFY THE APP
+Always respond in this format:
+1. Plan
+2. Changes made
+3. Files touched
+4. How to test
+5. Notes / assumptions
+
+If I ask for a specific feature, focus only on that feature and do not drift into unrelated improvements.
